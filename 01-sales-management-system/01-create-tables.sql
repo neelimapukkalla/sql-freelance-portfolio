@@ -8,3 +8,16 @@ CREATE TABLE Customers
     CreatedDate DATETIME2 NOT NULL,
     LastModifiedDate DATETIME2 NULL
 );
+
+CREATE TABLE Products
+(
+    ProductID INT IDENTITY(1,1) PRIMARY KEY,
+    SKU VARCHAR(50) NOT NULL UNIQUE,
+    ProductName VARCHAR(150) NOT NULL,
+    ProductColor VARCHAR(50),
+    Cost DECIMAL(10,2) NOT NULL CHECK (Cost >= 0),
+    UnitPrice DECIMAL(10,2) NOT NULL CHECK (UnitPrice >= 0),
+    StockQuantity INT NOT NULL CHECK (StockQuantity >= 0),
+    CreatedDate DATETIME2 NOT NULL,
+    LastModifiedDate DATETIME2 NULL
+);
