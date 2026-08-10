@@ -74,3 +74,30 @@ CREATE TABLE OrderDetails
         FOREIGN KEY (ProductID)
         REFERENCES Products(ProductID)
 );
+
+CREATE TABLE Payments
+(
+    PaymentID INT IDENTITY(1,1) PRIMARY KEY,
+
+    OrderID INT NOT NULL,
+
+    PaymentStatus VARCHAR(20) NOT NULL
+        CHECK (PaymentStatus IN
+        ('Pending', 'Paid', 'Failed', 'Refunded')),
+
+    PaymentMethod VARCHAR(20) NOT NULL
+        CHECK (PaymentMethod IN
+        ('UPI', 'Card', 'Cash', 'NetBanking')),
+
+    PaymentAmount DECIMAL(12,2) NOT NULL
+        CHECK (PaymentAmount >= 0),
+
+    PaymentDate DATETIME2 NULL,
+
+    CreatedDate DATETIME2 NOT NULL,
+    LastModifiedDate DATETIME2 NULL,
+
+    CONSTRAINT FK_Payments_Orders
+        FOREIGN KEY (OrderID)
+        REFERENCES Orders(OrderID)
+);
