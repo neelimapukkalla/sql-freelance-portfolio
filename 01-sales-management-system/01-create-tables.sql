@@ -42,3 +42,35 @@ CREATE TABLE Orders
         FOREIGN KEY (CustomerID)
         REFERENCES Customers(CustomerID)
 );
+
+CREATE TABLE OrderDetails
+(
+    OrderDetailID INT IDENTITY(1,1) PRIMARY KEY,
+
+    OrderID INT NOT NULL,
+    ProductID INT NOT NULL,
+
+    Quantity INT NOT NULL
+        CHECK (Quantity > 0),
+
+    UnitPrice DECIMAL(10,2) NOT NULL
+        CHECK (UnitPrice >= 0),
+
+    DiscountPercent DECIMAL(5,2) NOT NULL
+        DEFAULT 0
+        CHECK (DiscountPercent >= 0 AND DiscountPercent <= 100),
+
+    LineTotal AS
+        (Quantity * UnitPrice * (1 - DiscountPercent / 100.0)),
+
+    CreatedDate DATETIME2 NOT NULL,
+    LastModifiedDate DATETIME2 NULL,
+
+    CONSTRAINT FK_OrderDetails_Orders
+        FOREIGN KEY (OrderID)
+        REFERENCES Orders(OrderID),
+
+    CONSTRAINT FK_OrderDetails_Products
+        FOREIGN KEY (ProductID)
+        REFERENCES Products(ProductID)
+);
