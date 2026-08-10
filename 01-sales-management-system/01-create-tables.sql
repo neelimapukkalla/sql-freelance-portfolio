@@ -21,3 +21,24 @@ CREATE TABLE Products
     CreatedDate DATETIME2 NOT NULL,
     LastModifiedDate DATETIME2 NULL
 );
+
+CREATE TABLE Orders
+(
+    OrderID INT IDENTITY(1,1) PRIMARY KEY,
+    CustomerID INT NOT NULL,
+    OrderDate DATETIME2 NOT NULL,
+    StartDate DATETIME2 NULL,
+    EndDate DATETIME2 NULL,
+    ShipDate DATETIME2 NULL,
+    OrderStatus VARCHAR(20) NOT NULL
+        CHECK (OrderStatus IN
+        ('Pending', 'Processing', 'Shipped', 'Completed', 'Cancelled')),
+    TotalAmount DECIMAL(12,2) NOT NULL
+        CHECK (TotalAmount >= 0),
+    CreatedDate DATETIME2 NOT NULL,
+    LastModifiedDate DATETIME2 NULL,
+
+    CONSTRAINT FK_Orders_Customers
+        FOREIGN KEY (CustomerID)
+        REFERENCES Customers(CustomerID)
+);
